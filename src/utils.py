@@ -24,13 +24,14 @@ def get_data_from_hh(company_ids: list) -> dict:
         response = requests.get(f"{base_url}vacancies", params=params)
         companies_data[company_id] = response.json()
 
-        company_name = requests.get(f"{base_url}employers/{company_id}")
-        companies_data[company_id]['company_name'] = company_name.json()['name']
+        company_data = requests.get(f"{base_url}employers/{company_id}")
+        companies_data[company_id]['company_name'] = company_data.json()['name']
+        companies_data[company_id]['company_description'] = company_data.json()['description']
 
     return companies_data
 
 
-def insert_companies_into_db(companies_ids):
+def insert_companies_into_db(companies_data):
     """
 
     :return:
@@ -46,8 +47,9 @@ def insert_companies_into_db(companies_ids):
         password=config.get("Open_db", "password")
     )) as conn:
         with conn.cursor() as cur:
-            pass
-
+            cur.execute(
+                f"INSERT INTO companies (company_id, "
+            )
 
 
 def insert_vacancies_into_db(companies_data):
