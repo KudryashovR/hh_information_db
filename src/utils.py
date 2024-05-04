@@ -20,7 +20,7 @@ def get_data_from_hh(company_ids: list) -> dict:
     companies_data = {}
 
     for company_id in company_ids:
-        params = {'employer_id': company_id}
+        params = {'employer_id': company_id, "per_page": 100}
         response = requests.get(f"{base_url}vacancies", params=params)
         companies_data[company_id] = response.json()
 
